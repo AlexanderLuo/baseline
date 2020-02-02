@@ -6,4 +6,6 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple selenium
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple flask
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple retry
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple grpcio
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple dubbo-telnet
 
