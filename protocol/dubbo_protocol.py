@@ -8,54 +8,46 @@ from locust import events
 
 
 class Dubbo(telnetlib.Telnet):
-
     prompt = 'dubbo>'
     __encoding = "utf-8"
     __connect_timeout = 3
     __read_timeout = 10
 
-    def __init__(self, host, port,timeout=__connect_timeout):
+    def __init__(self, host, port, timeout=__connect_timeout):
         try:
-            super().__init__(host, port,timeout)
+            super().__init__(host, port, timeout)
         except Exception as err:
             print("[host:%s port:%s] 连接失败" % (self.host, self.port))
         else:
             print("*****  [host:%s port:%s] 连接成功  *****" % (self.host, self.port))
             self.write(b"\n")
 
-
-    def command(self,  str_=""):
+    def command(self, str_=""):
         data = self.read_until(Dubbo.prompt.encode())
         self.write(str_.encode() + b"\n")
         return data
 
-
-    def do_invoke(self, service_name, method_name, param = ''):
+    def do_invoke(self, service_name, method_name, param=''):
         command_str = "invoke {0}.{1}({2})".format(
             service_name, method_name, param)
         self.command(command_str)
         data = self.command("")
-        data = data.decode(Dubbo.__encoding,errors='ignore').split('\n')[0].strip()
+        data = data.decode(Dubbo.__encoding, errors='ignore').split('\n')[0].strip()
         return data
-
-
-
 
 
 class DubboClient(Dubbo):
     def __init__(self, host, port):
         super().__init__(host, port)
 
-
-
-    def invoke(self, service_name, method_name, param = ''):
+    def invoke(self, service_name, method_name, param=''):
         start_time = time.time()
         try:
-            data = self.do_invoke(service_name,method_name,param)
+            data = self.do_invoke(service_name, method_name, param)
         except Exception as e:
             total_time = int((time.time() - start_time) * 1000)
             events.request_failure.fire(request_type="dubbo", name="start",
-                                        response_time=total_time, exception=e, response_length = 16333)
+                                        response_time=total_time, exception=e, response_length=16333)
         else:
             total_time = int((time.time() - start_time) * 1000)
             events.request_success.fire(request_type="dubbo", name="start",
@@ -64,18 +56,15 @@ class DubboClient(Dubbo):
             return data
 
 
-
-
-
-
 if __name__ == '__main__':
     onn = DubboClient('192.168.20.4', 23888)
 
-    data = onn.invoke('com.biz.soa.service.promotion.backend.presale.SoaPromotionPreSaleService','findPreSaleAgreement')
+    data = onn.invoke('com.biz.soa.service.promotion.backend.presale.SoaPromotionPreSaleService',
+                      'findPreSaleAgreement')
     print(data)
-    data = onn.invoke('com.biz.soa.service.promotion.backend.presale.SoaPromotionPreSaleService','findPreSaleAgreement')
+    data = onn.invoke('com.biz.soa.service.promotion.backend.presale.SoaPromotionPreSaleService',
+                      'findPreSaleAgreement')
     print(data)
-
 
 #
 # import json

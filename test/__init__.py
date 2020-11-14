@@ -1,1 +1,1 @@
-from ..protocol import  dubbo_telnet
+from ..protocol import dubbo_telnet

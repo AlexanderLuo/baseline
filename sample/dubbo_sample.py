@@ -1,11 +1,9 @@
-
 from locust import TaskSet, task, between
 
 from protocol import DubboLocust
 
 
 class TestUser(DubboLocust):
-
     # host = "192.168.20.4"
     host = "192.168.10.29"
     port = 23882
@@ -13,7 +11,6 @@ class TestUser(DubboLocust):
     # min_wait = 2000
     # max_wait = 2000
     wait_time = between(0, 5)
-
 
     class task_set(TaskSet):
 
@@ -27,9 +24,6 @@ class TestUser(DubboLocust):
             print(response)
 
 
-
-
-
 if __name__ == '__main__':
     user = TestUser()
-    user.run()            # msg = 'invoke com.biz.soa.service.promotion.backend.game.getCurrentConfig()'
+    user.run()  # msg = 'invoke com.biz.soa.service.promotion.backend.game.getCurrentConfig()'
